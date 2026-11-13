@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Emilite Advisory · Manage Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root{
+    --navy:#10202F; --deep:#16302A; --deep-2:#1F5A48; --gold:#A9762A; --wash:#E5EDE9; --goldwash:#F6EEDD;
+    --paper:#F4F3EE; --ink:#1B2622; --muted:#66706B; --line:#DCDAD1; --danger:#9B3B26; --dangerwash:#F8E1DA;
+    --serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
+  [hidden]{display:none!important}
+  button,input,select{font:inherit;color:inherit}
+  .topbar{background:var(--navy);color:#F2EDE1;padding:12px 28px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--gold);flex-wrap:wrap}
+  .topbar img{width:40px;height:40px}
+  .topbar .name{font-family:var(--serif);font-weight:700;font-size:22px}
+  .topbar .tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(169,118,42,.6);border-radius:999px;padding:3px 10px}
+  .topbar .right{margin-left:auto;display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:11px;color:rgba(242,237,225,.62)}
+  .topbar .right a,.topbar .right button{font:600 12px var(--sans);color:#F2EDE1;background:transparent;border:1px solid rgba(242,237,225,.4);border-radius:5px;padding:6px 12px;cursor:pointer;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:30px 28px 60px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+  .eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(28px,4vw,40px);color:var(--deep);margin:8px 0 6px}
+  .sub{color:var(--muted);margin:0 0 22px;max-width:72ch}
+  .msg{border-radius:4px;padding:10px 14px;margin:0 0 16px;font-size:14px}
+  .msg.err{background:var(--dangerwash);border:1px solid #E7AE9F;color:var(--danger);font-weight:600}
+  .msg.info{background:var(--wash);border:1px solid #C3D6CD;color:var(--deep)}
+  .msg.warn{background:#FBF1DC;border:1px solid #E5C98E;color:#6B4E14}
+  .card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:18px 20px}
+  .card h2{font-family:var(--serif);font-weight:600;font-size:20px;color:var(--deep);margin:0 0 4px}
+  .card p{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .narrow{max-width:460px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .field input,.field select{width:100%;border:1px solid var(--line);border-radius:3px;padding:11px 12px;font-size:16px;outline:none;background:#fff}
+  .field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,118,42,.15)}
+  .btn{border:1px solid var(--deep);background:var(--deep);color:#fff;border-radius:4px;padding:10px 16px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .btn:hover{background:var(--deep-2)}
+  .btn.gold{background:var(--gold);border-color:var(--gold)}
+  .btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{background:var(--paper)}
+  .btn.sm{padding:5px 10px;font-size:13px}
+  .btn.no{background:#fff;color:var(--danger);border-color:#E7AE9F}
+  .btn.no:hover{background:var(--dangerwash)}
+  .btn:disabled{opacity:.55;cursor:progress}
+  .save{position:sticky;top:0;z-index:5;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--goldwash);border:1px solid #D2AE6E;border-radius:4px;padding:12px 16px;margin-bottom:16px;color:#6B4A14;font-size:14px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .tools{display:flex;gap:10px;margin-bottom:10px}
+  .tools input{flex:1;border:1px solid var(--line);border-radius:4px;padding:10px 12px;background:#fff}
+  .tablewrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--deep);text-align:left;padding:10px 12px;font-weight:500;white-space:nowrap}
+  td{padding:10px 12px;border-bottom:1px solid #ECEAE3;vertical-align:middle}
+  tbody tr:nth-child(even) td{background:#FAF9F6}
+  td.who b{display:block}
+  td.who span{color:var(--muted);font-size:13px}
+  td.acts{text-align:right;min-width:150px}
+  td.st,td.dt{white-space:nowrap}
+  .chip{white-space:nowrap}
+  td.acts .btn{margin:3px 0 3px 6px}
+  .chip{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;border:1px solid}
+  .chip.on{background:var(--wash);color:var(--deep-2);border-color:#C3D6CD}
+  .chip.off{background:var(--dangerwash);color:var(--danger);border-color:#E7AE9F}
+  .chip.admin{background:var(--goldwash);color:#6B4A14;border-color:#D2AE6E;margin-left:6px}
+  .empty{padding:26px;text-align:center;color:var(--muted)}
+  ol.how{margin:0;padding-left:20px;font-size:14px}
+  ol.how li{margin-bottom:6px}
+  code{font-family:var(--mono);font-size:13px;background:var(--paper);padding:1px 5px;border-radius:3px}
+  @media (max-width:640px){.topbar,.wrap{padding-left:16px;padding-right:16px}.topbar .right span{display:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NiIgZmlsbD0iIzEwMjAyRiIgc3Ryb2tlPSIjQTk3NjJBIiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQTk3NjJBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9Ii42Ii8+PHRleHQgeD0iNTAiIHk9IjYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgJ1RpbWVzIE5ldyBSb21hbicsIHNlcmlmIiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDlCMzZBIiBsZXR0ZXItc3BhY2luZz0iMSI+RUE8L3RleHQ+PC9zdmc+" alt="">
+  <div class="name">Emilite Advisory</div>
+  <span class="tag">Admin</span>
+  <div class="right"><span id="who"></span><a href="index.html">Open tools</a><button type="button" id="signOut" hidden>Sign out</button></div>
+</header>
+
+<main class="wrap">
+  <div class="eyebrow">Administrator only</div>
+  <h1>Manage Access</h1>
+  <p class="sub">Add, switch off or remove the people who can sign in to Emilite Advisory. Changes are saved into a new <b>users.js</b> file, which you upload to your GitHub folder.</p>
+  <div id="msg"></div>
+
+  <!-- First-time setup -->
+  <section id="setupBox" class="card narrow" hidden>
+    <h2>Create the administrator account</h2>
+    <p>No accounts exist yet. Create yours first; this is the email and password you'll use on the sign-in page and here.</p>
+    <form id="setupForm" novalidate>
+      <div class="field"><label for="sName">Your name</label><input id="sName" type="text" autocomplete="name"></div>
+      <div class="field"><label for="sEmail">Your email</label><input id="sEmail" type="email" autocomplete="username"></div>
+      <div class="field"><label for="sPw">Password (at least 10 characters)</label><input id="sPw" type="password" autocomplete="new-password"></div>
+      <button class="btn" type="submit">Create and download users.js</button>
+    </form>
+  </section>
+
+  <!-- Admin sign-in -->
+  <section id="signinBox" class="card narrow" hidden>
+    <h2>Administrator sign-in</h2>
+    <form id="signinForm" novalidate>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div>
+      <button class="btn" type="submit" id="signinBtn">Sign in</button>
+    </form>
+  </section>
+
+  <!-- Manager -->
+  <section id="panel" hidden>
+    <div class="save" id="saveBar" hidden>
+      <span><b id="changeCount">0</b> unsaved change(s). Download the new users.js and upload it to GitHub to apply them.</span>
+      <span><button class="btn ghost sm" type="button" id="undo">Undo all</button> <button class="btn gold" type="button" id="download">Download users.js</button></span>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="tools"><input type="search" id="search" placeholder="Search name or email…" aria-label="Search"></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Person</th><th>Status</th><th>Added</th><th style="text-align:right">Actions</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:grid;gap:16px">
+        <div class="card">
+          <h2>Add a person</h2>
+          <p>Give them this email and password yourself.</p>
+          <form id="addForm" novalidate>
+            <div class="field"><label for="aName">Name</label><input id="aName" type="text"></div>
+            <div class="field"><label for="aEmail">Email</label><input id="aEmail" type="email"></div>
+            <div class="field"><label for="aPw">Password</label><div style="display:flex;gap:6px"><input id="aPw" type="text" autocomplete="off"><button class="btn ghost" type="button" id="gen">Generate</button></div></div>
+            <div class="field"><label for="aRole">Role</label><select id="aRole"><option value="agent">Agent: can use the tools</option><option value="admin">Administrator: can also manage access</option></select></div>
+            <button class="btn" type="submit">Add</button>
+          </form>
+        </div>
+        <div class="card">
+          <h2>How to apply changes</h2>
+          <ol class="how">
+            <li>Make your changes on this page.</li>
+            <li>Click <b>Download users.js</b>.</li>
+            <li>On GitHub, open <code>Emilite_Advisory</code> → <b>Add file → Upload files</b>, drop in <code>users.js</code> and <b>Commit changes</b> (it replaces the old one).</li>
+            <li>Within about a minute, removed or switched-off people are signed out on their next visit.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+/* Shared by login.html, index.html and admin.html (inlined into each). */
+window.EA = (function () {
+  var ITER = 210000, SESSION_KEY = "ea-session", SESSION_HOURS = 12;
+  var enc = new TextEncoder();
+  function b64(buf) { var s = "", b = new Uint8Array(buf); for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+  function unb64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  async function hash(password, saltB64, iter) {
+    var key = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits"]);
+    var bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: unb64(saltB64), iterations: iter || ITER, hash: "SHA-256" }, key, 256);
+    return b64(bits);
+  }
+  function newSalt() { var u = new Uint8Array(16); crypto.getRandomValues(u); return b64(u); }
+  async function makeUser(email, name, password, role) {
+    var salt = newSalt();
+    return { email: email.trim().toLowerCase(), name: (name || "").trim(), role: role || "agent", active: true, salt: salt, iter: ITER, hash: await hash(password, salt, ITER), added: (function (d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); })(new Date()) };
+  }
+  function users() { return (window.EA_USERS || []).slice(); }
+  function find(email) { email = (email || "").trim().toLowerCase(); return users().find(function (u) { return u.email === email; }); }
+  async function check(email, password) {
+    var u = find(email); if (!u || !u.active) return null;
+    var h = await hash(password, u.salt, u.iter);
+    return h === u.hash ? u : null;
+  }
+  function startSession(u) { try { localStorage.setItem(SESSION_KEY, JSON.stringify({ email: u.email, tag: u.hash.slice(0, 16), exp: Date.now() + SESSION_HOURS * 3600e3 })); } catch (e) { } }
+  function endSession() { try { localStorage.removeItem(SESSION_KEY); } catch (e) { } }
+  // A session only counts while the person is still active in users.js with the same password.
+  function current() {
+    try {
+      var s = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+      if (!s || s.exp < Date.now()) return null;
+      var u = find(s.email);
+      return u && u.active && u.hash.slice(0, 16) === s.tag ? u : null;
+    } catch (e) { return null; }
+  }
+  // Always load the newest users.js (skip the browser cache).
+  function loadUsers() {
+    return new Promise(function (res) {
+      var s = document.createElement("script"); s.src = "users.js?t=" + Date.now();
+      s.onload = function () { res(true); }; s.onerror = function () { res(false); };
+      document.head.appendChild(s);
+    });
+  }
+  return { hash: hash, makeUser: makeUser, users: users, find: find, check: check, startSession: startSession, endSession: endSession, current: current, loadUsers: loadUsers };
+})();
+
+</script>
+<script>
+(async function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  function say(kind, html) { $("msg").innerHTML = kind ? '<div class="msg ' + kind + '">' + html + "</div>" : ""; }
+  if (!window.crypto || !crypto.subtle) { say("err", "This browser can't create passwords securely. Open this page over https (your GitHub Pages link)."); return; }
+  await EA.loadUsers();
+  var original = JSON.stringify(EA.users()), list = EA.users(), me = null, changes = 0;
+
+  function fileText(arr) {
+    return "/* Emilite Advisory – approved accounts. Generated by admin.html on " + new Date().toLocaleString("en-SG") + ".\n" +
+      "   Edit with admin.html, not by hand. Passwords are stored only as PBKDF2 hashes. */\n" +
+      "window.EA_USERS = " + JSON.stringify(arr, null, 2) + ";\n";
+  }
+  function download(arr) {
+    var blob = new Blob([fileText(arr)], { type: "text/javascript" });
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "users.js";
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+  function mark() { changes++; $("changeCount").textContent = changes; $("saveBar").hidden = false; }
+  function genPw() { var c = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789", u = new Uint32Array(12), s = ""; crypto.getRandomValues(u); for (var i = 0; i < 12; i++) s += c[u[i] % c.length]; return s; }
+
+  function render() {
+    var q = $("search").value.trim().toLowerCase();
+    var rows = list.filter(function (u) { return !q || (u.email + " " + (u.name || "")).toLowerCase().indexOf(q) >= 0; });
+    if (!rows.length) { $("rows").innerHTML = '<tr><td colspan="4" class="empty">No matching people.</td></tr>'; return; }
+    $("rows").innerHTML = rows.map(function (u) {
+      var self = me && u.email === me.email;
+      var acts = self ? '<button class="btn sm ghost" data-act="pw" data-e="' + esc(u.email) + '">New password</button>'
+        : (u.active ? '<button class="btn sm ghost" data-act="off" data-e="' + esc(u.email) + '">Switch off</button>' : '<button class="btn sm" data-act="on" data-e="' + esc(u.email) + '">Switch on</button>')
+          + '<button class="btn sm ghost" data-act="pw" data-e="' + esc(u.email) + '">New password</button>'
+          + '<button class="btn sm no" data-act="del" data-e="' + esc(u.email) + '">Remove</button>';
+      return '<tr><td class="who"><b>' + esc(u.name || "—") + (self ? " (you)" : "") + "</b><span>" + esc(u.email) + "</span></td>"
+        + '<td class="st"><span class="chip ' + (u.active ? "on" : "off") + '">' + (u.active ? "Active" : "Switched off") + "</span>" + (u.role === "admin" ? '<span class="chip admin">Admin</span>' : "") + "</td>"
+        + '<td class="dt">' + esc(u.added || "—") + '</td><td class="acts">' + acts + "</td></tr>";
+    }).join("");
+  }
+  async function showPanel() {
+    $("who").textContent = me.email; $("signOut").hidden = false; $("signinBox").hidden = true; $("setupBox").hidden = true; $("panel").hidden = false; render();
+  }
+
+  // Which screen?
+  if (!list.length) { $("setupBox").hidden = false; say("info", "First-time setup. After you download <b>users.js</b>, upload it to your <code>Emilite_Advisory</code> folder on GitHub, then sign in."); }
+  else {
+    var cur = EA.current();
+    if (cur && cur.role === "admin") { me = cur; showPanel(); }
+    else { $("signinBox").hidden = false; if (cur) say("err", esc(cur.email) + " isn't an administrator."); }
+  }
+
+  $("setupForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var n = $("sName").value, em = $("sEmail").value.trim(), pw = $("sPw").value;
+    if (!/^\S+@\S+\.\S+$/.test(em)) { say("err", "Enter a valid email."); return; }
+    if (pw.length < 10) { say("err", "Choose a password of at least 10 characters."); return; }
+    var u = await EA.makeUser(em, n, pw, "admin");
+    download([u]);
+    say("info", "<b>users.js</b> downloaded. Upload it to <code>Emilite_Advisory</code> on GitHub, wait about a minute, then reload this page and sign in.");
+  });
+  $("signinForm").addEventListener("submit", async function (e) {
+    e.preventDefault(); var b = $("signinBtn"); b.disabled = true; say("");
+    var u = await EA.check($("email").value, $("password").value); b.disabled = false;
+    if (!u) { say("err", "That email and password don't match an active account."); return; }
+    if (u.role !== "admin") { say("err", "This account isn't an administrator."); return; }
+    EA.startSession(u); me = u; showPanel();
+  });
+  $("signOut").onclick = function () { EA.endSession(); location.replace("login.html?signedout=1"); };
+  $("search").addEventListener("input", render);
+  $("gen").onclick = function () { $("aPw").value = genPw(); };
+  $("addForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var n = $("aName").value, em = $("aEmail").value.trim().toLowerCase(), pw = $("aPw").value, role = $("aRole").value;
+    if (!/^\S+@\S+\.\S+$/.test(em)) { say("err", "Enter a valid email."); return; }
+    if (list.some(function (u) { return u.email === em; })) { say("err", esc(em) + " is already on the list."); return; }
+    if (pw.length < 8) { say("err", "Use a password of at least 8 characters, or click Generate."); return; }
+    list.push(await EA.makeUser(em, n, pw, role)); mark(); render();
+    say("info", "Added <b>" + esc(em) + "</b> with password <code>" + esc(pw) + "</code>. Copy it now and send it to them. Then download users.js and upload it.");
+    $("aName").value = $("aEmail").value = $("aPw").value = "";
+  });
+  $("rows").addEventListener("click", async function (e) {
+    var b = e.target.closest("[data-act]"); if (!b) return;
+    var em = b.dataset.e, i = list.findIndex(function (u) { return u.email === em; }); if (i < 0) return;
+    var act = b.dataset.act;
+    if (act === "on" || act === "off") { list[i].active = act === "on"; say("info", esc(em) + (act === "on" ? " will be able to sign in" : " will be switched off") + " once you upload the new users.js."); }
+    else if (act === "del") { if (!confirm("Remove " + em + " completely?")) return; list.splice(i, 1); say("info", esc(em) + " will be removed once you upload the new users.js."); }
+    else if (act === "pw") {
+      var pw = prompt("New password for " + em + " (at least 8 characters). Leave blank to generate one.", "");
+      if (pw === null) return; if (!pw) pw = genPw();
+      if (pw.length < 8) { say("err", "Password too short."); return; }
+      var nu = await EA.makeUser(em, list[i].name, pw, list[i].role); nu.active = list[i].active; nu.added = list[i].added; list[i] = nu;
+      say("info", "New password for <b>" + esc(em) + "</b>: <code>" + esc(pw) + "</code>. Copy it now. It works once you upload the new users.js.");
+    }
+    mark(); render();
+  });
+  $("download").onclick = function () { download(list); original = JSON.stringify(list); changes = 0; $("saveBar").hidden = true; say("info", "<b>users.js</b> downloaded. Upload it to your <code>Emilite_Advisory</code> folder on GitHub to apply the changes."); };
+  $("undo").onclick = function () { list = JSON.parse(original); changes = 0; $("saveBar").hidden = true; say(""); render(); };
+  window.addEventListener("beforeunload", function (e) { if (changes) { e.preventDefault(); e.returnValue = ""; } });
+})();
+</script>
+</body>
+</html>
