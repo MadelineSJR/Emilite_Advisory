@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Emilite Advisory · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root{--navy:#10202F;--deep:#16302A;--deep-2:#1F5A48;--gold:#A9762A;--wash:#E5EDE9;--goldwash:#F6EEDD;--paper:#F4F3EE;--ink:#1B2622;--muted:#66706B;--line:#DCDAD1;--danger:#9B3B26;--dangerwash:#F8E1DA;
+    --serif:"Fraunces",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
+  [hidden]{display:none!important}
+  button,input,select{font:inherit;color:inherit}
+  .topbar{background:var(--navy);color:#F2EDE1;padding:12px 28px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--gold);flex-wrap:wrap}
+  .topbar img{width:40px;height:40px}
+  .topbar .name{font-family:var(--serif);font-weight:700;font-size:22px}
+  .topbar .tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(169,118,42,.6);border-radius:999px;padding:3px 10px}
+  .topbar .right{margin-left:auto;display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:11px;color:rgba(242,237,225,.62)}
+  .topbar .right a,.topbar .right button{font:600 12px var(--sans);color:#F2EDE1;background:transparent;border:1px solid rgba(242,237,225,.4);border-radius:5px;padding:6px 12px;cursor:pointer;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:30px 28px 60px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+  .eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(28px,4vw,40px);color:var(--deep);margin:8px 0 6px}
+  .sub{color:var(--muted);margin:0 0 22px;max-width:76ch}
+  .msg{border-radius:4px;padding:10px 14px;margin:0 0 16px;font-size:14px}
+  .msg.err{background:var(--dangerwash);border:1px solid #E7AE9F;color:var(--danger);font-weight:600}
+  .msg.info{background:var(--wash);border:1px solid #C3D6CD;color:var(--deep)}
+  .msg.warn{background:#FBF1DC;border:1px solid #E5C98E;color:#6B4E14}
+  .card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:18px 20px}
+  .card h2{font-family:var(--serif);font-weight:600;font-size:20px;color:var(--deep);margin:0 0 4px}
+  .card p{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .narrow{max-width:520px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .field input,.field select{width:100%;border:1px solid var(--line);border-radius:3px;padding:11px 12px;font-size:16px;outline:none;background:#fff}
+  .field input[type=file]{padding:9px;font-size:14px}
+  .field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,118,42,.15)}
+  .field small{display:block;color:var(--muted);font-size:12.5px;margin-top:5px}
+  .btn{border:1px solid var(--deep);background:var(--deep);color:#fff;border-radius:4px;padding:10px 16px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .btn:hover{background:var(--deep-2)}
+  .btn.gold{background:var(--gold);border-color:var(--gold)}
+  .btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{background:var(--paper)}
+  .btn.sm{padding:5px 10px;font-size:13px}
+  .btn.no{background:#fff;color:var(--danger);border-color:#E7AE9F}
+  .btn.no:hover{background:var(--dangerwash)}
+  .btn:disabled{opacity:.55;cursor:progress}
+  .save{position:sticky;top:0;z-index:5;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--goldwash);border:1px solid #D2AE6E;border-radius:4px;padding:12px 16px;margin-bottom:16px;color:#6B4A14;font-size:14px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .tools{display:flex;gap:10px;margin-bottom:10px}
+  .tools input{flex:1;border:1px solid var(--line);border-radius:4px;padding:10px 12px;background:#fff}
+  .tablewrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--deep);text-align:left;padding:10px 12px;font-weight:500;white-space:nowrap}
+  td{padding:10px 12px;border-bottom:1px solid #ECEAE3;vertical-align:middle}
+  tbody tr:nth-child(even) td{background:#FAF9F6}
+  td.who b{display:block}
+  td.who span{color:var(--muted);font-size:13px}
+  td.st,td.dt{white-space:nowrap}
+  td.acts{text-align:right;min-width:150px}
+  td.acts .btn{margin:3px 0 3px 6px}
+  .chip{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;border:1px solid;white-space:nowrap}
+  .chip.on{background:var(--wash);color:var(--deep-2);border-color:#C3D6CD}
+  .chip.off{background:var(--dangerwash);color:var(--danger);border-color:#E7AE9F}
+  .chip.admin{background:var(--goldwash);color:#6B4A14;border-color:#D2AE6E;margin-left:6px}
+  .empty{padding:26px;text-align:center;color:var(--muted)}
+  ol.how{margin:0;padding-left:20px;font-size:14px}
+  ol.how li{margin-bottom:6px}
+  code{font-family:var(--mono);font-size:13px;background:var(--paper);padding:1px 5px;border-radius:3px}
+  @media (max-width:640px){.topbar,.wrap{padding-left:16px;padding-right:16px}.topbar .right span{display:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NiIgZmlsbD0iIzEwMjAyRiIgc3Ryb2tlPSIjQTk3NjJBIiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQTk3NjJBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9Ii42Ii8+PHRleHQgeD0iNTAiIHk9IjYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgJ1RpbWVzIE5ldyBSb21hbicsIHNlcmlmIiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDlCMzZBIiBsZXR0ZXItc3BhY2luZz0iMSI+RUE8L3RleHQ+PC9zdmc+" alt="">
+  <div class="name">Emilite Advisory</div>
+  <span class="tag">Admin</span>
+  <div class="right"><span id="who"></span><a href="index.html">Open tools</a><button type="button" id="signOut" hidden>Sign out</button></div>
+</header>
+
+<main class="wrap">
+  <div class="eyebrow">Administrator only</div>
+  <h1>Manage Access</h1>
+  <p class="sub">Everything on the public site is encrypted. Only people you add here can unlock it with their own email and password. Your changes produce a new <b>users.js</b> (and, when you update the calculator, a new <b>index.html</b>) to upload to GitHub.</p>
+  <div id="msg"></div>
+
+  <section id="setupBox" class="card narrow" hidden>
+    <h2>First-time setup</h2>
+    <p>Create your administrator account and lock the calculator. Nothing leaves your computer; the files are made here and downloaded to you.</p>
+    <form id="setupForm" novalidate>
+      <div class="field"><label for="sName">Your name</label><input id="sName" type="text" autocomplete="name"></div>
+      <div class="field"><label for="sEmail">Your email</label><input id="sEmail" type="email" autocomplete="username"></div>
+      <div class="field"><label for="sPw">Password (at least 9 characters)</label><input id="sPw" type="password" autocomplete="new-password"></div>
+      <div class="field"><label for="sFile">Calculator file</label><input id="sFile" type="file" accept=".html,text/html"><small>Choose <b>calculator-source.html</b> from your computer. Keep that file private; don't upload it to GitHub.</small></div>
+      <button class="btn" type="submit" id="setupBtn">Create and download index.html + users.js</button>
+    </form>
+  </section>
+
+  <section id="signinBox" class="card narrow" hidden>
+    <h2>Administrator sign-in</h2>
+    <form id="signinForm" novalidate>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div>
+      <button class="btn" type="submit" id="signinBtn">Sign in</button>
+    </form>
+  </section>
+
+  <section id="panel" hidden>
+    <div class="save" id="saveBar" hidden>
+      <span><b id="changeCount">0</b> unsaved change(s). Download the new users.js and upload it to GitHub to apply them.</span>
+      <span><button class="btn ghost sm" type="button" id="undo">Undo all</button> <button class="btn gold" type="button" id="download">Download users.js</button></span>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="tools"><input type="search" id="search" placeholder="Search name or email…" aria-label="Search"></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Person</th><th>Status</th><th>Added</th><th style="text-align:right">Actions</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:grid;gap:16px">
+        <div class="card">
+          <h2>Add a person</h2>
+          <p>Give them this email and password yourself.</p>
+          <form id="addForm" novalidate>
+            <div class="field"><label for="aName">Name</label><input id="aName" type="text"></div>
+            <div class="field"><label for="aEmail">Email</label><input id="aEmail" type="email"></div>
+            <div class="field"><label for="aPw">Password</label><div style="display:flex;gap:6px"><input id="aPw" type="text" autocomplete="off"><button class="btn ghost" type="button" id="gen">Generate</button></div></div>
+            <div class="field"><label for="aRole">Role</label><select id="aRole"><option value="agent">Agent: can use the tools</option><option value="admin">Administrator: can also manage access</option></select></div>
+            <button class="btn" type="submit">Add</button>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Update the calculator</h2>
+          <p>After I send you a new calculator-source.html, lock it here to make a new index.html. Everyone keeps their password.</p>
+          <div class="field"><input id="uFile" type="file" accept=".html,text/html" aria-label="Calculator file"></div>
+          <button class="btn ghost" type="button" id="rebuild">Make new index.html</button>
+        </div>
+        <div class="card">
+          <h2>How to apply changes</h2>
+          <ol class="how">
+            <li>Make your changes on this page.</li>
+            <li>Click <b>Download users.js</b>.</li>
+            <li>On GitHub, open <code>Emilite_Advisory</code> → <b>Add file → Upload files</b>, drop the file in and <b>Commit changes</b>.</li>
+            <li>Within about a minute, removed or switched-off people can no longer sign in.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script type="application/json" id="shellTpl">"\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n\u003cmeta charset=\"UTF-8\"\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\n\u003cmeta name=\"robots\" content=\"noindex, nofollow\"\u003e\n\u003ctitle\u003eEmilite Advisory\u003c/title\u003e\n\u003clink rel=\"preconnect\" href=\"https://fonts.googleapis.com\"\u003e\n\u003clink rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap\"\u003e\n\u003cstyle\u003e\n  :root{--navy:#10202F;--deep:#16302A;--deep-2:#1F5A48;--gold:#A9762A;--wash:#E5EDE9;--ink:#1B2622;--muted:#66706B;--line:#DCDAD1;--danger:#9B3B26;\n    --serif:\"Fraunces\",Georgia,\"Times New Roman\",serif;--sans:\"IBM Plex Sans\",\"Segoe UI\",system-ui,-apple-system,Arial,sans-serif;--mono:\"IBM Plex Mono\",ui-monospace,Menlo,Consolas,monospace}\n  *{box-sizing:border-box}\n  html,body{margin:0;min-height:100%}\n  body{background:radial-gradient(ellipse at 50% 40%,#162b3e 0%,var(--navy) 60%);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;border-top:3px solid var(--gold)}\n  .card{background:#fff;width:100%;max-width:440px;border-radius:4px;box-shadow:0 24px 70px rgba(0,0,0,.45);padding:44px 40px 32px;text-align:center}\n  .logo{width:76px;height:76px;margin:0 auto 18px;display:block}\n  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}\n  h1{font-family:var(--serif);font-weight:700;font-size:32px;line-height:1.1;margin:0 0 10px;color:var(--deep)}\n  .sub{font-size:15px;color:var(--muted);line-height:1.5;margin:0 0 26px}\n  .field{text-align:left;margin-bottom:18px}\n  .field label{display:block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}\n  .field input{width:100%;border:1px solid var(--line);border-radius:3px;padding:13px 12px;font:16px var(--sans);color:var(--ink);outline:none;background:#fff}\n  .field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,118,42,.15)}\n  .pw{position:relative}\n  .pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--muted);font:600 12px var(--sans);padding:6px 8px;cursor:pointer}\n  .msg{font-size:14px;line-height:1.45;border-radius:3px;padding:10px 12px;margin:0 0 14px;text-align:left;display:none}\n  .msg.err{display:block;background:#F8E1DA;border:1px solid #E7AE9F;color:var(--danger);font-weight:600}\n  .msg.info{display:block;background:var(--wash);border:1px solid #C3D6CD;color:var(--deep)}\n  .btn{width:100%;padding:15px;border:0;border-radius:3px;background:var(--deep);color:#fff;font:600 16px var(--sans);cursor:pointer}\n  .btn:hover{background:var(--deep-2)}\n  .btn:disabled{opacity:.6;cursor:progress}\n  .foot{font-size:13px;color:var(--muted);line-height:1.5;margin:22px 0 0}\n  #card{visibility:hidden}\n  @media (max-width:480px){.card{padding:34px 22px 28px}h1{font-size:28px}}\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n  \u003cmain class=\"card\" id=\"card\"\u003e\n    \u003cimg class=\"logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NiIgZmlsbD0iIzEwMjAyRiIgc3Ryb2tlPSIjQTk3NjJBIiBzdHJva2Utd2lkdGg9IjQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQTk3NjJBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9Ii42Ii8+PHRleHQgeD0iNTAiIHk9IjYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgJ1RpbWVzIE5ldyBSb21hbicsIHNlcmlmIiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRDlCMzZBIiBsZXR0ZXItc3BhY2luZz0iMSI+RUE8L3RleHQ+PC9zdmc+\" alt=\"Emilite Advisory\"\u003e\n    \u003cp class=\"eyebrow\"\u003eEmilite Advisory\u003c/p\u003e\n    \u003ch1\u003eAgent Tools\u003c/h1\u003e\n    \u003cp class=\"sub\"\u003eSign in with the account your administrator set up for you.\u003c/p\u003e\n    \u003cdiv class=\"msg\" id=\"msg\" role=\"status\"\u003e\u003c/div\u003e\n    \u003cform id=\"form\" novalidate\u003e\n      \u003cdiv class=\"field\"\u003e\u003clabel for=\"email\"\u003eEmail\u003c/label\u003e\u003cinput id=\"email\" type=\"email\" autocomplete=\"username\" required\u003e\u003c/div\u003e\n      \u003cdiv class=\"field\"\u003e\u003clabel for=\"password\"\u003ePassword\u003c/label\u003e\n        \u003cdiv class=\"pw\"\u003e\u003cinput id=\"password\" type=\"password\" autocomplete=\"current-password\" required\u003e\u003cbutton type=\"button\" id=\"toggle\" aria-label=\"Show password\"\u003eShow\u003c/button\u003e\u003c/div\u003e\u003c/div\u003e\n      \u003cbutton class=\"btn\" id=\"go\" type=\"submit\"\u003eSign In\u003c/button\u003e\n    \u003c/form\u003e\n    \u003cp class=\"foot\"\u003eNo account? Ask your administrator to add you.\u003c/p\u003e\n  \u003c/main\u003e\n\u003cscript type=\"text/plain\" id=\"eaPayload\"\u003e__PAYLOAD__\u003c/script\u003e\n\u003cscript\u003e\n/* Emilite Advisory vault \u2013 encryption helpers (Web Crypto: PBKDF2-SHA256 + AES-256-GCM). */\nwindow.EAV = (function () {\n  var ITER = 250000, ID_ITER = 120000, SESSION = \"ea-session\", HOURS = 12;\n  var te = new TextEncoder(), td = new TextDecoder();\n  function b64(buf) { var b = new Uint8Array(buf), s = \"\", CH = 0x8000; for (var i = 0; i \u003c b.length; i += CH) s += String.fromCharCode.apply(null, b.subarray(i, i + CH)); return btoa(s); }\n  function unb64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i \u003c b.length; i++) u[i] = b.charCodeAt(i); return u; }\n  function rand(n) { var u = new Uint8Array(n); crypto.getRandomValues(u); return u; }\n  async function pbkdf2(text, saltB64, iter) {\n    var k = await crypto.subtle.importKey(\"raw\", te.encode(text), \"PBKDF2\", false, [\"deriveBits\"]);\n    return new Uint8Array(await crypto.subtle.deriveBits({ name: \"PBKDF2\", salt: unb64(saltB64), iterations: iter, hash: \"SHA-256\" }, k, 256));\n  }\n  async function aesKey(raw) { return crypto.subtle.importKey(\"raw\", raw, \"AES-GCM\", false, [\"encrypt\", \"decrypt\"]); }\n  async function seal(rawKey, text) { var iv = rand(12); var ct = await crypto.subtle.encrypt({ name: \"AES-GCM\", iv: iv }, await aesKey(rawKey), te.encode(text)); return b64(iv) + \".\" + b64(ct); }\n  async function open(rawKey, box) { var p = box.split(\".\"); var pt = await crypto.subtle.decrypt({ name: \"AES-GCM\", iv: unb64(p[0]) }, await aesKey(rawKey), unb64(p[1])); return td.decode(pt); }\n  function norm(e) { return String(e || \"\").trim().toLowerCase(); }\n  async function idFor(email, vault) { return b64(await pbkdf2(\"ea-id:\" + norm(email), vault.salt, vault.idIter || ID_ITER)); }\n  // One sign-in entry: the site key, wrapped with a key made from this person's email + password.\n  async function makeEntry(vault, siteKeyB64, person, password) {\n    var salt = b64(rand(16));\n    var kek = await pbkdf2(norm(person.email) + \"\\u0000\" + password, salt, ITER);\n    var box = await seal(kek, JSON.stringify({ k: siteKeyB64, email: norm(person.email), name: person.name || \"\", role: person.role || \"agent\" }));\n    return { id: await idFor(person.email, vault), salt: salt, iter: ITER, box: box };\n  }\n  async function unlock(vault, email, password) {\n    var id = await idFor(email, vault);\n    var e = (vault.users || []).find(function (u) { return u.id === id; });\n    if (!e) return null;\n    try {\n      var kek = await pbkdf2(norm(email) + \"\\u0000\" + password, e.salt, e.iter || ITER);\n      var info = JSON.parse(await open(kek, e.box));\n      info.id = id; return info;\n    } catch (x) { return null; }\n  }\n  function saveSession(info) { try { localStorage.setItem(SESSION, JSON.stringify({ id: info.id, k: info.k, email: info.email, name: info.name, role: info.role, exp: Date.now() + HOURS * 3600e3 })); } catch (e) { } }\n  function readSession() { try { var s = JSON.parse(localStorage.getItem(SESSION) || \"null\"); return s && s.exp \u003e Date.now() ? s : null; } catch (e) { return null; } }\n  function clearSession() { try { localStorage.removeItem(SESSION); } catch (e) { } }\n  function loadVault() {\n    return new Promise(function (res) {\n      window.EA_VAULT = null;\n      var s = document.createElement(\"script\"); s.src = \"users.js?t=\" + Date.now();\n      s.onload = function () { res(window.EA_VAULT || null); }; s.onerror = function () { res(null); };\n      document.head.appendChild(s);\n    });\n  }\n  return { b64: b64, unb64: unb64, rand: rand, seal: seal, open: open, norm: norm, idFor: idFor, makeEntry: makeEntry, unlock: unlock,\n           saveSession: saveSession, readSession: readSession, clearSession: clearSession, loadVault: loadVault, ITER: ITER, ID_ITER: ID_ITER };\n})();\n\n\u003c/script\u003e\n\u003cscript\u003e\n(async function () {\n  var $ = function (id) { return document.getElementById(id); };\n  function say(kind, t) { var m = $(\"msg\"); m.className = \"msg \" + kind; m.textContent = t; }\n  function showForm() { $(\"card\").style.visibility = \"visible\"; }\n  async function enter(k) {\n    var html = await EAV.open(EAV.unb64(k), $(\"eaPayload\").textContent.trim());\n    document.open(); document.write(html); document.close();\n  }\n  $(\"toggle\").onclick = function () { var p = $(\"password\"), s = p.type === \"password\"; p.type = s ? \"text\" : \"password\"; this.textContent = s ? \"Hide\" : \"Show\"; };\n  if (!window.crypto || !crypto.subtle) { showForm(); say(\"err\", \"This browser can't open the tools securely. Use the https link.\"); $(\"go\").disabled = true; return; }\n  var q = new URLSearchParams(location.search);\n  var vault = await EAV.loadVault();\n  if (!vault) { showForm(); say(\"err\", \"Sign-in isn't available right now. Please try again later.\"); $(\"go\").disabled = true; return; }\n  var s = EAV.readSession();\n  if (s && (vault.users || []).some(function (u) { return u.id === s.id; })) { try { await enter(s.k); return; } catch (e) { } }\n  EAV.clearSession(); showForm();\n  if (q.get(\"signedout\")) say(\"info\", \"You've signed out.\");\n  $(\"form\").addEventListener(\"submit\", async function (e) {\n    e.preventDefault();\n    var email = $(\"email\").value, pw = $(\"password\").value;\n    if (!email.trim() || !pw) { say(\"err\", \"Enter both email and password.\"); return; }\n    var b = $(\"go\"); b.disabled = true; b.textContent = \"Signing in\u2026\";\n    var info = await EAV.unlock(vault, email, pw);\n    if (!info) { b.disabled = false; b.textContent = \"Sign In\"; say(\"err\", \"That email and password don't match an approved account.\"); return; }\n    EAV.saveSession(info);\n    try { if (history.replaceState) history.replaceState(null, \"\", location.pathname + location.hash); await enter(info.k); }\n    catch (x) { b.disabled = false; b.textContent = \"Sign In\"; say(\"err\", \"Couldn't open the tools. Ask your administrator to rebuild index.html.\"); }\n  });\n})();\n\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"</script>
+<script>
+/* Emilite Advisory vault – encryption helpers (Web Crypto: PBKDF2-SHA256 + AES-256-GCM). */
+window.EAV = (function () {
+  var ITER = 250000, ID_ITER = 120000, SESSION = "ea-session", HOURS = 12;
+  var te = new TextEncoder(), td = new TextDecoder();
+  function b64(buf) { var b = new Uint8Array(buf), s = "", CH = 0x8000; for (var i = 0; i < b.length; i += CH) s += String.fromCharCode.apply(null, b.subarray(i, i + CH)); return btoa(s); }
+  function unb64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function rand(n) { var u = new Uint8Array(n); crypto.getRandomValues(u); return u; }
+  async function pbkdf2(text, saltB64, iter) {
+    var k = await crypto.subtle.importKey("raw", te.encode(text), "PBKDF2", false, ["deriveBits"]);
+    return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", salt: unb64(saltB64), iterations: iter, hash: "SHA-256" }, k, 256));
+  }
+  async function aesKey(raw) { return crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["encrypt", "decrypt"]); }
+  async function seal(rawKey, text) { var iv = rand(12); var ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, await aesKey(rawKey), te.encode(text)); return b64(iv) + "." + b64(ct); }
+  async function open(rawKey, box) { var p = box.split("."); var pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(p[0]) }, await aesKey(rawKey), unb64(p[1])); return td.decode(pt); }
+  function norm(e) { return String(e || "").trim().toLowerCase(); }
+  async function idFor(email, vault) { return b64(await pbkdf2("ea-id:" + norm(email), vault.salt, vault.idIter || ID_ITER)); }
+  // One sign-in entry: the site key, wrapped with a key made from this person's email + password.
+  async function makeEntry(vault, siteKeyB64, person, password) {
+    var salt = b64(rand(16));
+    var kek = await pbkdf2(norm(person.email) + "\u0000" + password, salt, ITER);
+    var box = await seal(kek, JSON.stringify({ k: siteKeyB64, email: norm(person.email), name: person.name || "", role: person.role || "agent" }));
+    return { id: await idFor(person.email, vault), salt: salt, iter: ITER, box: box };
+  }
+  async function unlock(vault, email, password) {
+    var id = await idFor(email, vault);
+    var e = (vault.users || []).find(function (u) { return u.id === id; });
+    if (!e) return null;
+    try {
+      var kek = await pbkdf2(norm(email) + "\u0000" + password, e.salt, e.iter || ITER);
+      var info = JSON.parse(await open(kek, e.box));
+      info.id = id; return info;
+    } catch (x) { return null; }
+  }
+  function saveSession(info) { try { localStorage.setItem(SESSION, JSON.stringify({ id: info.id, k: info.k, email: info.email, name: info.name, role: info.role, exp: Date.now() + HOURS * 3600e3 })); } catch (e) { } }
+  function readSession() { try { var s = JSON.parse(localStorage.getItem(SESSION) || "null"); return s && s.exp > Date.now() ? s : null; } catch (e) { return null; } }
+  function clearSession() { try { localStorage.removeItem(SESSION); } catch (e) { } }
+  function loadVault() {
+    return new Promise(function (res) {
+      window.EA_VAULT = null;
+      var s = document.createElement("script"); s.src = "users.js?t=" + Date.now();
+      s.onload = function () { res(window.EA_VAULT || null); }; s.onerror = function () { res(null); };
+      document.head.appendChild(s);
+    });
+  }
+  return { b64: b64, unb64: unb64, rand: rand, seal: seal, open: open, norm: norm, idFor: idFor, makeEntry: makeEntry, unlock: unlock,
+           saveSession: saveSession, readSession: readSession, clearSession: clearSession, loadVault: loadVault, ITER: ITER, ID_ITER: ID_ITER };
+})();
+
+</script>
+<script>
+(async function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  function say(kind, html) { $("msg").innerHTML = kind ? '<div class="msg ' + kind + '">' + html + "</div>" : ""; }
+  if (!window.crypto || !crypto.subtle) { say("err", "This browser can't encrypt. Open this page over https (your GitHub Pages link)."); return; }
+  var today = function () { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+  var vault = await EAV.loadVault();
+  var K = null, me = null, dir = [], users = [], snapshot = null, changes = 0;
+
+  function dl(name, text, type) {
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: type })); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+  async function vaultText() {
+    // Directory of people is encrypted with the site key: readable only after sign-in.
+    var dirBox = await EAV.seal(EAV.unb64(K), JSON.stringify(dir));
+    var v = { v: 1, salt: vault.salt, idIter: vault.idIter, users: users, dir: dirBox };
+    return "/* Emilite Advisory – encrypted access list. Made by admin.html; do not edit by hand. */\nwindow.EA_VAULT = " + JSON.stringify(v) + ";\n";
+  }
+  async function buildIndex(file) {
+    var html = await file.text();
+    if (!/<html[\s>]/i.test(html) || html.indexOf("EA_VAULT") >= 0) throw new Error("That doesn't look like calculator-source.html.");
+    var box = await EAV.seal(EAV.unb64(K), html);
+    return JSON.parse($("shellTpl").textContent).replace("__PAYLOAD__", function () { return box; });
+  }
+  function mark() { changes++; $("changeCount").textContent = changes; $("saveBar").hidden = false; }
+  function genPw() { var c = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789", u = new Uint32Array(12), s = ""; crypto.getRandomValues(u); for (var i = 0; i < 12; i++) s += c[u[i] % c.length]; return s; }
+  function hasKey(id) { return users.some(function (u) { return u.id === id; }); }
+
+  function render() {
+    var q = $("search").value.trim().toLowerCase();
+    var rows = dir.filter(function (p) { return !q || (p.email + " " + (p.name || "")).toLowerCase().indexOf(q) >= 0; });
+    if (!rows.length) { $("rows").innerHTML = '<tr><td colspan="4" class="empty">No matching people.</td></tr>'; return; }
+    $("rows").innerHTML = rows.map(function (p) {
+      var on = hasKey(p.id), self = me && p.id === me.id;
+      var acts = self ? '<button class="btn sm ghost" data-act="pw" data-id="' + esc(p.id) + '">New password</button>'
+        : (on ? '<button class="btn sm ghost" data-act="off" data-id="' + esc(p.id) + '">Switch off</button>' : '<button class="btn sm" data-act="on" data-id="' + esc(p.id) + '">Switch on</button>')
+          + (on ? '<button class="btn sm ghost" data-act="pw" data-id="' + esc(p.id) + '">New password</button>' : "")
+          + '<button class="btn sm no" data-act="del" data-id="' + esc(p.id) + '">Remove</button>';
+      return '<tr><td class="who"><b>' + esc(p.name || "—") + (self ? " (you)" : "") + "</b><span>" + esc(p.email) + "</span></td>"
+        + '<td class="st"><span class="chip ' + (on ? "on" : "off") + '">' + (on ? "Active" : "Switched off") + "</span>" + (p.role === "admin" ? '<span class="chip admin">Admin</span>' : "") + "</td>"
+        + '<td class="dt">' + esc(p.added || "—") + '</td><td class="acts">' + acts + "</td></tr>";
+    }).join("");
+  }
+  function showPanel() {
+    $("who").textContent = me.email; $("signOut").hidden = false; $("signinBox").hidden = true; $("setupBox").hidden = true; $("panel").hidden = false;
+    snapshot = JSON.stringify({ dir: dir, users: users }); render();
+  }
+  async function enterAs(info) {
+    if (info.role !== "admin") { say("err", esc(info.email) + " isn't an administrator."); return false; }
+    K = info.k; me = info;
+    try { dir = vault.dir ? JSON.parse(await EAV.open(EAV.unb64(K), vault.dir)) : []; } catch (e) { dir = []; }
+    users = (vault.users || []).slice();
+    showPanel(); return true;
+  }
+
+  if (!vault || !(vault.users || []).length) {
+    $("setupBox").hidden = false;
+    say("info", "First-time setup. You'll get two files: <b>index.html</b> (the locked calculator) and <b>users.js</b> (the encrypted access list). Upload both to <code>Emilite_Advisory</code>.");
+  } else {
+    var s = EAV.readSession();
+    if (s && s.role === "admin" && hasKeyIn(vault, s.id)) await enterAs(s); else $("signinBox").hidden = false;
+  }
+  function hasKeyIn(v, id) { return (v.users || []).some(function (u) { return u.id === id; }); }
+
+  $("setupForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var n = $("sName").value.trim(), em = EAV.norm($("sEmail").value), pw = $("sPw").value, f = $("sFile").files[0];
+    if (!/^\S+@\S+\.\S+$/.test(em)) { say("err", "Enter a valid email."); return; }
+    if (pw.length < 9) { say("err", "Choose a password of at least 9 characters."); return; }
+    if (!f) { say("err", "Choose calculator-source.html."); return; }
+    var b = $("setupBtn"); b.disabled = true; b.textContent = "Locking…";
+    try {
+      vault = { v: 1, salt: EAV.b64(EAV.rand(16)), idIter: EAV.ID_ITER, users: [] };
+      K = EAV.b64(EAV.rand(32));
+      var person = { name: n, email: em, role: "admin" };
+      var entry = await EAV.makeEntry(vault, K, person, pw);
+      users = [entry]; dir = [{ id: entry.id, name: n, email: em, role: "admin", added: today() }];
+      var index = await buildIndex(f);
+      dl("index.html", index, "text/html"); dl("users.js", await vaultText(), "text/javascript");
+      say("info", "Downloaded <b>index.html</b> and <b>users.js</b>. Upload both to <code>Emilite_Advisory</code> on GitHub (replacing the old ones), wait about a minute, then sign in.");
+    } catch (x) { say("err", esc(x.message || "Something went wrong.")); }
+    b.disabled = false; b.textContent = "Create and download index.html + users.js";
+  });
+  $("signinForm").addEventListener("submit", async function (e) {
+    e.preventDefault(); var b = $("signinBtn"); b.disabled = true; say("");
+    var info = await EAV.unlock(vault, $("email").value, $("password").value); b.disabled = false;
+    if (!info) { say("err", "That email and password don't match an active account."); return; }
+    if (await enterAs(info)) EAV.saveSession(info);
+  });
+  $("signOut").onclick = function () { EAV.clearSession(); location.replace("index.html?signedout=1"); };
+  $("search").addEventListener("input", render);
+  $("gen").onclick = function () { $("aPw").value = genPw(); };
+  $("addForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var n = $("aName").value.trim(), em = EAV.norm($("aEmail").value), pw = $("aPw").value, role = $("aRole").value;
+    if (!/^\S+@\S+\.\S+$/.test(em)) { say("err", "Enter a valid email."); return; }
+    if (dir.some(function (p) { return p.email === em; })) { say("err", esc(em) + " is already on the list."); return; }
+    if (pw.length < 8) { say("err", "Use a password of at least 8 characters, or click Generate."); return; }
+    var entry = await EAV.makeEntry(vault, K, { name: n, email: em, role: role }, pw);
+    users.push(entry); dir.push({ id: entry.id, name: n, email: em, role: role, added: today() }); mark(); render();
+    say("info", "Added <b>" + esc(em) + "</b> with password <code>" + esc(pw) + "</code>. Copy it now and send it to them, then download users.js and upload it.");
+    $("aName").value = $("aEmail").value = $("aPw").value = "";
+  });
+  $("rows").addEventListener("click", async function (e) {
+    var b = e.target.closest("[data-act]"); if (!b) return;
+    var id = b.dataset.id, p = dir.find(function (x) { return x.id === id; }); if (!p) return;
+    var act = b.dataset.act;
+    if (act === "off") { users = users.filter(function (u) { return u.id !== id; }); say("info", esc(p.email) + " will be switched off once you upload the new users.js."); }
+    else if (act === "del") { if (!confirm("Remove " + p.email + " completely?")) return; users = users.filter(function (u) { return u.id !== id; }); dir = dir.filter(function (x) { return x.id !== id; }); say("info", esc(p.email) + " will be removed once you upload the new users.js."); }
+    else if (act === "pw" || act === "on") {
+      var pw = prompt((act === "on" ? "Switching on " : "New password for ") + p.email + ". Enter a password (at least 8 characters), or leave blank to generate one.", "");
+      if (pw === null) return; if (!pw) pw = genPw();
+      if (pw.length < 8) { say("err", "Password too short."); return; }
+      var entry = await EAV.makeEntry(vault, K, p, pw);
+      users = users.filter(function (u) { return u.id !== id; }); users.push(entry);
+      say("info", "Password for <b>" + esc(p.email) + "</b>: <code>" + esc(pw) + "</code>. Copy it now. It works once you upload the new users.js.");
+    }
+    mark(); render();
+  });
+  $("download").onclick = async function () { dl("users.js", await vaultText(), "text/javascript"); snapshot = JSON.stringify({ dir: dir, users: users }); changes = 0; $("saveBar").hidden = true; say("info", "<b>users.js</b> downloaded. Upload it to <code>Emilite_Advisory</code> on GitHub to apply the changes."); };
+  $("undo").onclick = function () { var s = JSON.parse(snapshot); dir = s.dir; users = s.users; changes = 0; $("saveBar").hidden = true; say(""); render(); };
+  $("rebuild").onclick = async function () {
+    var f = $("uFile").files[0]; if (!f) { say("err", "Choose the new calculator-source.html first."); return; }
+    try { dl("index.html", await buildIndex(f), "text/html"); say("info", "New <b>index.html</b> downloaded. Upload it to <code>Emilite_Advisory</code> on GitHub."); }
+    catch (x) { say("err", esc(x.message)); }
+  };
+  window.addEventListener("beforeunload", function (e) { if (changes) { e.preventDefault(); e.returnValue = ""; } });
+})();
+</script>
+</body>
+</html>
